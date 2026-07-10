@@ -1,0 +1,44 @@
+.admin-dashboard { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8f9fa; }
+.admin-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: #1e1b4b; color: white; position: sticky; top: 0; z-index: 10; }
+.back-btn { background: rgba(255,255,255,0.15); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; color: white; }
+.page-title { font-size: 18px; font-weight: 700; flex: 1; }
+.admin-badge { background: #6366f1; color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+.tab-bar { display: flex; background: white; border-bottom: 1px solid #e5e7eb; overflow-x: auto; }
+.tab-bar button { flex: 1; background: none; border: none; padding: 10px 8px; font-size: 13px; font-weight: 600; color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+.tab-bar button.active { color: #6366f1; border-bottom-color: #6366f1; }
+.admin-content { padding: 16px; }
+.stats-grid { display: flex; flex-direction: column; gap: 10px; }
+.stat-card { background: white; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; border-left: 4px solid; }
+.stat-icon { width: 40px; height: 40px; border-radius: 10px; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+.stat-value { font-size: 22px; font-weight: 800; color: #111827; }
+.stat-label { font-size: 12px; color: #9ca3af; }
+.search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+.search-bar input { flex: 1; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; font-size: 15px; outline: none; }
+.search-bar button { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 0 16px; font-size: 16px; cursor: pointer; }
+.user-row { background: white; border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 44px; height: 44px; border-radius: 50%; background: #6366f1; color: white; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.user-info { flex: 1; }
+.user-name { font-size: 15px; font-weight: 600; color: #111827; }
+.user-phone { font-size: 13px; color: #9ca3af; }
+.user-meta { font-size: 12px; color: #6b7280; margin-top: 2px; }
+.toggle-btn { font-size: 12px; font-weight: 600; border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; white-space: nowrap; }
+.toggle-btn.active { background: #fee2e2; color: #dc2626; }
+.toggle-btn.suspended { background: #d1fae5; color: #059669; }
+.tx-row { background: white; border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: flex-start; }
+.tx-type { font-size: 14px; font-weight: 600; color: #111827; text-transform: capitalize; }
+.tx-users { font-size: 13px; color: #6b7280; }
+.tx-date { font-size: 12px; color: #9ca3af; }
+.tx-amount-admin { text-align: right; }
+.tx-amount-admin div { font-size: 16px; font-weight: 700; color: #111827; }
+.tx-status { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+.tx-status.completed { background: #d1fae5; color: #065f46; }
+.tx-status.pending { background: #fef3c7; color: #92400e; }
+.tx-status.failed { background: #fee2e2; color: #991b1b; }
+.kyc-hint { font-size: 14px; color: #9ca3af; margin-bottom: 12px; }
+.kyc-card { background: white; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.kyc-user { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.kyc-doc { font-size: 13px; color: #6b7280; margin-bottom: 12px; }
+.kyc-actions { display: flex; gap: 10px; }
+.approve-btn { flex: 1; background: #d1fae5; color: #065f46; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.reject-btn { flex: 1; background: #fee2e2; color: #dc2626; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.empty-state { text-align: center; padding: 40px 20px; color: #9ca3af; }

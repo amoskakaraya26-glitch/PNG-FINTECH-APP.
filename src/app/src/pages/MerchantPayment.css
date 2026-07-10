@@ -1,0 +1,50 @@
+.merchant-payment { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8f9fa; }
+.page-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
+.back-btn { background: #f3f4f6; border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; }
+.page-title { font-size: 18px; font-weight: 700; }
+.search-content { padding: 16px; }
+.search-box { display: flex; gap: 8px; margin-bottom: 16px; }
+.search-box input { flex: 1; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 12px; font-size: 15px; outline: none; }
+.search-box input:focus { border-color: #6366f1; }
+.search-box button { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 0 16px; font-size: 16px; cursor: pointer; }
+.merchant-item { background: white; border-radius: 12px; padding: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.merchant-item:active { background: #f9fafb; }
+.merchant-icon { font-size: 30px; }
+.merchant-info { flex: 1; }
+.merchant-name { font-size: 15px; font-weight: 600; color: #111827; }
+.merchant-category { font-size: 13px; color: #9ca3af; }
+.no-results { text-align: center; padding: 20px; color: #9ca3af; }
+.manual-section { margin-top: 20px; }
+.manual-section p { font-size: 13px; color: #9ca3af; margin-bottom: 8px; }
+.manual-input { display: flex; gap: 8px; }
+.manual-input input { flex: 1; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; font-size: 15px; outline: none; }
+.manual-input button { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 0 16px; font-weight: 600; cursor: pointer; }
+.amount-content { padding: 16px; }
+.merchant-selected { text-align: center; padding: 24px 0; }
+.merchant-big-icon { font-size: 64px; margin-bottom: 12px; }
+.merchant-selected h3 { font-size: 20px; font-weight: 700; }
+.merchant-selected p { font-size: 14px; color: #9ca3af; }
+.amount-input-wrap { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
+.currency { font-size: 22px; font-weight: 700; color: #6b7280; }
+.amount-big { font-size: 48px; font-weight: 800; color: #111827; border: none; outline: none; background: transparent; text-align: center; width: 200px; }
+.quick-amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.quick-amounts button { background: #f3f4f6; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.note-input { margin-bottom: 16px; }
+.note-input input { width: 100%; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 12px; font-size: 15px; outline: none; box-sizing: border-box; }
+.btn-primary { background: #6366f1; color: white; border: none; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 10px; }
+.btn-primary:disabled { opacity: 0.6; }
+.btn-outline { background: transparent; color: #6366f1; border: 2px solid #6366f1; border-radius: 12px; padding: 12px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; }
+.btn-cancel { background: #f3f4f6; color: #6b7280; border: none; border-radius: 12px; padding: 12px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; }
+.confirm-content { padding: 16px; }
+.confirm-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+.confirm-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.confirm-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: #6b7280; }
+.confirm-row:last-child { border-bottom: none; }
+.confirm-row strong { font-size: 15px; color: #111827; }
+.amount-large { font-size: 22px; color: #6366f1 !important; }
+.success-content { padding: 40px 24px; text-align: center; }
+.success-icon { font-size: 80px; margin-bottom: 20px; }
+.success-content h2 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+.success-content p { font-size: 16px; color: #6b7280; }
+.success-content strong { color: #111827; }
+.success-content .btn-primary { margin-top: 32px; }

@@ -1,0 +1,71 @@
+.merchant-qr-page{
+min-height:100vh;
+background:#f3f4f6;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.merchant-card{
+width:100%;
+max-width:420px;
+background:white;
+border-radius:25px;
+padding:30px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+.logo{
+font-size:26px;
+font-weight:800;
+margin-bottom:20px;
+}
+
+.badge{
+background:#dcfce7;
+color:#166534;
+padding:8px 14px;
+border-radius:20px;
+display:inline-block;
+font-weight:700;
+margin:10px 0 20px;
+}
+
+.qr-box{
+background:#fff;
+padding:15px;
+border-radius:20px;
+margin:20px auto;
+}
+
+.qr-box img{
+width:260px;
+}
+
+.scan-text{
+font-size:20px;
+font-weight:800;
+}
+
+.phone{
+color:#6b7280;
+}
+
+
+.qr-actions{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+
+.qr-actions button{
+flex:1;
+padding:12px;
+border:0;
+border-radius:12px;
+font-weight:700;
+cursor:pointer;
+}

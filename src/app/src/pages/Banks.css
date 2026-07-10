@@ -1,0 +1,157 @@
+.banks {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.banks h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.banks > p {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 40px;
+}
+
+.banks-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.link-account-section,
+.linked-accounts-section {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.link-account-section h2,
+.linked-accounts-section h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.link-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.no-accounts {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 40px;
+}
+
+.accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.account-card {
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+}
+
+.account-info h3 {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+}
+
+.account-number {
+  color: #7f8c8d;
+  margin: 0 0 10px 0;
+  font-family: monospace;
+}
+
+.account-info .balance {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.account-info .currency {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.account-info .amount {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.account-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.banks-info {
+  background: #ecf0f1;
+  padding: 25px;
+  border-radius: 10px;
+}
+
+.banks-info h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.supported-banks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.bank-item {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bank-item h4 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.bank-item p {
+  color: #7f8c8d;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .banks-content {
+    grid-template-columns: 1fr;
+  }
+
+  .account-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .account-actions {
+    width: 100%;
+  }
+
+  .account-actions .btn {
+    flex: 1;
+  }
+
+  .supported-banks {
+    grid-template-columns: 1fr;
+  }
+}

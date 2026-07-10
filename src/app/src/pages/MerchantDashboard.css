@@ -1,0 +1,80 @@
+.merchant-dashboard{
+min-height:100vh;
+background:#f3f4f6;
+padding:20px;
+}
+
+
+.md-header{
+margin-bottom:20px;
+}
+
+
+.md-header h1{
+font-size:28px;
+}
+
+
+.sales-card{
+background:white;
+border-radius:24px;
+padding:25px;
+box-shadow:0 8px 25px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+
+.sales-card span{
+color:#6b7280;
+font-weight:700;
+}
+
+
+.sales-card h1{
+font-size:42px;
+margin:10px 0;
+}
+
+
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+
+.stat-card{
+background:white;
+border-radius:20px;
+padding:20px;
+text-align:center;
+box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+
+.payments{
+margin-top:25px;
+}
+
+
+.payment-card{
+background:white;
+padding:18px;
+border-radius:18px;
+margin-bottom:12px;
+box-shadow:0 4px 15px rgba(0,0,0,.07);
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+
+.payment-card strong{
+display:block;
+}
+
+
+.payment-card span{
+font-weight:800;
+}

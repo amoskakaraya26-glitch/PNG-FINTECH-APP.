@@ -1,0 +1,34 @@
+.support { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8f9fa; }
+.page-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
+.back-btn { background: #f3f4f6; border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; }
+.page-title { font-size: 18px; font-weight: 700; }
+.tab-bar { display: flex; background: white; border-bottom: 1px solid #e5e7eb; }
+.tab-bar button { flex: 1; background: none; border: none; padding: 12px; font-size: 14px; font-weight: 600; color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent; }
+.tab-bar button.active { color: #6366f1; border-bottom-color: #6366f1; }
+.support-content { padding: 16px; }
+.contact-info { background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+.contact-item { color: white; font-size: 14px; padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+.faq-item { background: white; border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; cursor: pointer; font-size: 15px; font-weight: 600; color: #111827; }
+.faq-q:hover { background: #f9fafb; }
+.faq-a { padding: 12px 16px; font-size: 14px; color: #6b7280; line-height: 1.5; background: #f9fafb; border-top: 1px solid #e5e7eb; }
+.dispute-form { background: white; border-radius: 16px; padding: 16px; }
+.dispute-form h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.form-group label { font-size: 13px; font-weight: 600; color: #6b7280; }
+.form-group input, .form-group select, .form-group textarea { border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; font-size: 15px; outline: none; font-family: inherit; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #6366f1; }
+.form-group textarea { resize: vertical; }
+.btn-primary { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; }
+.btn-primary:disabled { opacity: 0.6; }
+.ticket-item { background: white; border-radius: 12px; padding: 14px; margin-bottom: 8px; }
+.ticket-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
+.ticket-subject { font-size: 15px; font-weight: 600; color: #111827; }
+.ticket-status { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; white-space: nowrap; }
+.ticket-status.open { background: #fef3c7; color: #92400e; }
+.ticket-status.in_progress { background: #dbeafe; color: #1e40af; }
+.ticket-status.resolved { background: #d1fae5; color: #065f46; }
+.ticket-type { font-size: 12px; color: #9ca3af; text-transform: capitalize; margin-bottom: 4px; }
+.ticket-date { font-size: 12px; color: #9ca3af; }
+.ticket-resolution { font-size: 13px; color: #059669; margin-top: 8px; background: #d1fae5; padding: 8px; border-radius: 8px; }
+.empty-state { text-align: center; padding: 40px 20px; color: #9ca3af; }

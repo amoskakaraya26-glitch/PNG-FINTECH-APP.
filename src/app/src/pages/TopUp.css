@@ -1,0 +1,25 @@
+.topup { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8f9fa; }
+.page-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
+.back-btn { background: #f3f4f6; border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; }
+.page-title { font-size: 18px; font-weight: 700; }
+.topup-content { padding: 16px; }
+.balance-mini { display: flex; justify-content: space-between; background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
+.balance-mini span { color: #6b7280; font-size: 14px; }
+.balance-mini strong { font-size: 18px; font-weight: 700; color: #6366f1; }
+.section-label { font-size: 14px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; margin-top: 16px; }
+.bank-card { display: flex; align-items: center; gap: 12px; background: white; border-radius: 12px; padding: 14px; margin-bottom: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+.bank-card.selected { border-color: #6366f1; background: #f0f0ff; }
+.bank-icon { font-size: 28px; }
+.bank-name { font-size: 15px; font-weight: 700; color: #111827; }
+.bank-account { font-size: 13px; color: #9ca3af; }
+.selected-check { margin-left: auto; font-size: 20px; }
+.no-account-card { background: white; border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 16px; }
+.no-account-card p { color: #6b7280; margin-bottom: 12px; }
+.btn-outline { background: transparent; color: #6366f1; border: 2px solid #6366f1; border-radius: 10px; padding: 10px 20px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.amount-input-wrap { display: flex; align-items: center; gap: 12px; background: white; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; }
+.currency-label { font-size: 20px; font-weight: 700; color: #6366f1; }
+.amount-input { flex: 1; border: none; font-size: 36px; font-weight: 800; outline: none; color: #111827; width: 0; }
+.quick-amounts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.quick-amt-btn { background: #f3f4f6; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-primary { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; transition: all 0.2s; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }

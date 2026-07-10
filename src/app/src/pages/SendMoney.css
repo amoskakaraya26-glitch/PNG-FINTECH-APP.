@@ -1,0 +1,42 @@
+.send-money { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8f9fa; }
+.page-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
+.back-btn { background: #f3f4f6; border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.page-title { font-size: 18px; font-weight: 700; }
+.sm-content { padding: 16px; }
+.sm-phone-input { width: 100%; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 14px; font-size: 16px; outline: none; }
+.sm-phone-input:focus { border-color: #6366f1; }
+.sm-section { margin-top: 20px; }
+.sm-section h3 { font-size: 14px; font-weight: 700; color: #6b7280; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.contacts-row { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px; }
+.contact-pill { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; min-width: 60px; }
+.contact-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+.contact-avatar.lg { width: 52px; height: 52px; font-size: 22px; }
+.contact-pill span { font-size: 12px; font-weight: 600; color: #374151; }
+.contact-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: white; border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
+.contact-row:hover { background: #f3f4f6; }
+.contact-name { font-size: 15px; font-weight: 600; color: #111827; }
+.contact-phone { font-size: 13px; color: #9ca3af; }
+.recipient-card { display: flex; align-items: center; gap: 12px; background: white; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+.amount-input-wrap { display: flex; align-items: center; gap: 12px; background: white; border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.currency-label { font-size: 20px; font-weight: 700; color: #6366f1; }
+.amount-input { flex: 1; border: none; font-size: 36px; font-weight: 800; outline: none; color: #111827; width: 0; }
+.quick-amounts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.quick-amt-btn { background: #f3f4f6; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; color: #374151; }
+.quick-amt-btn:hover { background: #e5e7eb; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group label { font-size: 14px; font-weight: 600; color: #6b7280; }
+.form-group input { border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 12px; font-size: 16px; outline: none; }
+.confirm-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+.confirm-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #111827; }
+.confirm-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 15px; color: #374151; }
+.confirm-row.big { font-size: 20px; font-weight: 700; color: #6366f1; }
+.btn-primary { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 8px; transition: all 0.2s; }
+.btn-primary:hover { background: #4f46e5; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-ghost { background: none; color: #6b7280; border: none; padding: 12px; font-size: 15px; cursor: pointer; width: 100%; }
+.success-screen { display: flex; flex-direction: column; align-items: center; padding-top: 60px; text-align: center; gap: 12px; }
+.success-icon { font-size: 72px; }
+.success-screen h2 { font-size: 28px; font-weight: 800; color: #111827; }
+.success-screen p { font-size: 16px; color: #6b7280; }
+.success-detail { font-size: 12px; color: #9ca3af; }
+.sm-input-wrap { margin-bottom: 8px; }

@@ -1,0 +1,28 @@
+.contacts { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8f9fa; }
+.page-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
+.back-btn { background: #f3f4f6; border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; }
+.page-title { flex: 1; font-size: 18px; font-weight: 700; }
+.add-btn { background: #6366f1; color: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 22px; cursor: pointer; font-weight: 300; }
+.contacts-content { padding: 16px; }
+.search-input { width: 100%; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 12px 14px; font-size: 15px; outline: none; background: white; margin-bottom: 16px; }
+.search-input:focus { border-color: #6366f1; }
+.add-contact-form { background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.add-contact-form h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.form-group label { font-size: 13px; font-weight: 600; color: #6b7280; }
+.form-group input { border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 10px; font-size: 15px; outline: none; }
+.form-group input:focus { border-color: #6366f1; }
+.btn-primary { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; }
+.btn-primary:disabled { opacity: 0.6; }
+.contacts-section { margin-bottom: 16px; }
+.section-title { font-size: 13px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.contact-card { display: flex; align-items: center; gap: 12px; background: white; border-radius: 12px; padding: 14px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.contact-avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; font-size: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-info { flex: 1; }
+.contact-name { font-size: 15px; font-weight: 600; color: #111827; }
+.contact-phone { font-size: 13px; color: #9ca3af; }
+.contact-actions { display: flex; gap: 4px; }
+.icon-btn { background: #f3f4f6; border: none; border-radius: 8px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.icon-btn:hover { background: #e5e7eb; }
+.icon-btn.danger:hover { background: #fee2e2; }
+.empty-state { text-align: center; padding: 48px 20px; color: #9ca3af; font-size: 15px; }

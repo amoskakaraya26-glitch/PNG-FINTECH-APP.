@@ -1,0 +1,44 @@
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 12px;
+  color: #9ca3af;
+  transition: color 0.2s;
+  min-width: 60px;
+}
+
+.nav-item.active { color: #6366f1; }
+
+.nav-icon { font-size: 22px; }
+.nav-label { font-size: 11px; margin-top: 2px; font-weight: 500; }
+
+.scan-btn {
+  background: #6366f1;
+  color: white !important;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  margin-top: -20px;
+  box-shadow: 0 4px 15px rgba(99,102,241,0.4);
+  padding: 0;
+}
+.scan-btn .nav-icon { font-size: 24px; }
+.scan-btn .nav-label { font-size: 10px; color: white; }

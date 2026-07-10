@@ -1,0 +1,33 @@
+.scan-qr { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #111827; }
+.page-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: #1f2937; border-bottom: 1px solid #374151; position: sticky; top: 0; z-index: 10; }
+.page-header .page-title { color: white; }
+.back-btn { background: #374151; border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; color: white; }
+.page-title { font-size: 18px; font-weight: 700; }
+.mode-tabs { display: flex; background: #1f2937; }
+.mode-tabs button { flex: 1; background: none; border: none; padding: 12px; font-size: 15px; font-weight: 600; color: #9ca3af; cursor: pointer; border-bottom: 2px solid transparent; }
+.mode-tabs button.active { color: #6366f1; border-bottom-color: #6366f1; }
+.scan-view { padding: 24px 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.scanner-frame { width: 280px; height: 280px; position: relative; background: #000; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.scanner-overlay { position: absolute; inset: 0; z-index: 2; }
+.scan-corner { position: absolute; width: 30px; height: 30px; border-color: #6366f1; border-style: solid; }
+.scan-corner.tl { top: 16px; left: 16px; border-width: 3px 0 0 3px; }
+.scan-corner.tr { top: 16px; right: 16px; border-width: 3px 3px 0 0; }
+.scan-corner.bl { bottom: 16px; left: 16px; border-width: 0 0 3px 3px; }
+.scan-corner.br { bottom: 16px; right: 16px; border-width: 0 3px 3px 0; }
+.scan-line { position: absolute; top: 50%; left: 16px; right: 16px; height: 2px; background: #6366f1; animation: scanline 2s linear infinite; }
+@keyframes scanline { 0%,100% { top: 20%; } 50% { top: 80%; } }
+.scanner-placeholder { text-align: center; color: #9ca3af; z-index: 1; }
+.camera-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+.scan-hint { font-size: 12px; margin-top: 4px; }
+.scan-label { color: #9ca3af; font-size: 14px; text-align: center; }
+.btn-secondary { background: none; border: 2px solid #6366f1; color: #6366f1; border-radius: 10px; padding: 12px 24px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; max-width: 280px; }
+.manual-view { padding: 32px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.manual-icon { font-size: 64px; }
+.manual-view h3 { font-size: 22px; font-weight: 700; color: white; }
+.manual-view p { font-size: 14px; color: #9ca3af; }
+.code-input { width: 100%; border: 1.5px solid #374151; border-radius: 10px; padding: 14px; font-size: 14px; background: #1f2937; color: white; outline: none; resize: none; }
+.code-input:focus { border-color: #6366f1; }
+.btn-primary { background: #6366f1; color: white; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; }
+.btn-outline { background: transparent; color: #6366f1; border: 2px solid #6366f1; border-radius: 10px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; }
+.or-divider { display: flex; align-items: center; gap: 12px; color: #6b7280; font-size: 13px; width: 100%; }
+.or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: #374151; }

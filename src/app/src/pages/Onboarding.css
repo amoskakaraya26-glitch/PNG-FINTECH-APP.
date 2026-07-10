@@ -1,0 +1,134 @@
+.onboarding {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.onboarding-card {
+  background: white;
+  border-radius: 24px;
+  padding: 40px 32px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.ob-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.ob-emoji { font-size: 64px; margin-bottom: 8px; }
+
+.ob-step h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.ob-step h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.ob-step p {
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.ob-features {
+  list-style: none;
+  text-align: left;
+  width: 100%;
+  margin: 8px 0 16px;
+}
+.ob-features li {
+  padding: 8px 0;
+  font-size: 16px;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.ob-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.ob-form input {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 16px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+.ob-form input:focus { border-color: #6366f1; }
+
+.btn-primary {
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: #4f46e5; }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-ghost {
+  background: none;
+  color: #6b7280;
+  border: none;
+  padding: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-back {
+  background: none;
+  color: #6366f1;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.ob-signin {
+  color: #6b7280;
+  font-size: 14px;
+}
+.ob-signin span { color: #6366f1; cursor: pointer; font-weight: 600; }
+
+.ob-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 24px;
+}
+.ob-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  transition: all 0.2s;
+}
+.ob-dot.active { background: #6366f1; width: 24px; border-radius: 4px; }

@@ -1,0 +1,97 @@
+# ===============================
+# PNG Wallet - Git Ignore
+# ===============================
+
+
+# Dependencies
+node_modules/
+src/app/node_modules/
+
+
+# Production builds
+dist/
+build/
+src/app/build/
+
+
+# Environment / secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# Build outputs / reports
+build_output*.txt
+build_out*.txt
+frontend_build_output*.txt
+coverage/
+
+
+# Large installers / binaries
+*.exe
+*.msi
+*.dmg
+
+
+# Archives / backups
+*.zip
+*.rar
+*.7z
+zip/
+
+
+# Database dumps / backups
+*.sql
+*.dump
+*.backup
+
+
+# TypeScript cache
+*.tsbuildinfo
+
+
+# Testing cache
+.jest/
+.nyc_output/
+
+
+# React cache
+.cache/
+
+
+# IDE files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+
+# OS files
+.DS_Store
+Thumbs.db
+
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+
+# Certificates / keys
+*.pem
+*.key
+*.crt
+
+
+# Local uploads/storage
+uploads/
+storage/

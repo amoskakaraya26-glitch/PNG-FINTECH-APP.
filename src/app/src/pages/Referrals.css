@@ -1,0 +1,34 @@
+.referrals { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8f9fa; }
+.page-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10; }
+.back-btn { background: #f3f4f6; border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 18px; }
+.page-title { font-size: 18px; font-weight: 700; }
+.referrals-content { padding: 16px; }
+.referral-hero { text-align: center; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border-radius: 20px; padding: 32px 24px; margin-bottom: 16px; }
+.gift-icon { font-size: 56px; margin-bottom: 12px; }
+.referral-hero h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+.referral-hero p { font-size: 14px; opacity: 0.9; line-height: 1.5; }
+.referral-code-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; text-align: center; }
+.code-label { font-size: 13px; color: #9ca3af; display: block; margin-bottom: 8px; }
+.code-display { font-size: 32px; font-weight: 800; color: #6366f1; letter-spacing: 4px; margin-bottom: 16px; font-family: monospace; }
+.code-actions { display: flex; gap: 10px; }
+.btn-copy { flex: 1; background: #f3f4f6; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn-share { flex: 1; background: #6366f1; color: white; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat-box { background: white; border-radius: 12px; padding: 16px; text-align: center; }
+.stat-box strong { display: block; font-size: 20px; font-weight: 800; color: #6366f1; }
+.stat-box span { font-size: 12px; color: #9ca3af; }
+.how-it-works { background: white; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+.how-it-works h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+.step-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+.step-number { width: 28px; height: 28px; border-radius: 50%; background: #6366f1; color: white; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-row span { font-size: 14px; color: #374151; }
+.referrals-list { background: white; border-radius: 16px; padding: 16px; }
+.referrals-list h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+.referral-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+.ref-avatar { width: 40px; height: 40px; border-radius: 50%; background: #6366f1; color: white; font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ref-info { flex: 1; }
+.ref-name { font-size: 14px; font-weight: 600; }
+.ref-date { font-size: 12px; color: #9ca3af; }
+.ref-status { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+.ref-status.pending { background: #fef3c7; color: #92400e; }
+.ref-status.paid { background: #d1fae5; color: #065f46; }
