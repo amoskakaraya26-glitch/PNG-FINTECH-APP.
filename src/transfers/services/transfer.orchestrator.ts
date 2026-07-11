@@ -10,10 +10,11 @@ import {
 } from '../models/transfer.model';
 
 class TransferOrchestrator {
-  async execute(
+  public async execute(
     request: TransferRequest
   ): Promise<TransferResult> {
     return transactionManager.execute(async () => {
+      // Create the transaction
       const transaction = await transactionRepository.create({
         fromWallet: request.fromWallet,
         toWallet: request.toWallet,
@@ -21,6 +22,7 @@ class TransferOrchestrator {
         currency: request.currency
       });
 
+      // Debit sender wallet
       await ledgerRepository.createEntry({
         walletId: request.fromWallet,
         transactionId: transaction.id,
@@ -29,6 +31,7 @@ class TransferOrchestrator {
         currency: request.currency
       });
 
+      // Credit receiver wallet
       await ledgerRepository.createEntry({
         walletId: request.toWallet,
         transactionId: transaction.id,
@@ -37,11 +40,22 @@ class TransferOrchestrator {
         currency: request.currency
       });
 
+      // Record audit event
       await auditRepository.record({
         userId: request.userId,
-        action: 'TRANSFER'
+        action: 'SEND_MONEY',
+        details: {
+          transactionId: transaction.id,
+          fromWallet: request.fromWallet,
+          toWallet: request.toWallet,
+          amount: request.amount,
+          currency: request.currency,
+          reference: request.reference
+        },
+        risk: 'LOW'
       });
 
+      // Mark transaction as completed
       await transactionRepository.updateStatus(
         transaction.id,
         'COMPLETED'
