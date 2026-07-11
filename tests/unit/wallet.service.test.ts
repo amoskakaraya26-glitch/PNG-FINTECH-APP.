@@ -431,10 +431,74 @@ expect(wallet)
 describe('topup',()=>{
 
 
-it.skip('should add amount to wallet balance',async()=>{});
+it('should add amount to wallet balance', async () => {
+  const mockClient = {
+    query: jest.fn(),
+    release: jest.fn()
+  };
+
+  jest.spyOn(db, 'getClient').mockResolvedValue(mockClient as any);
+
+  mockClient.query
+    .mockResolvedValueOnce({}) // BEGIN
+    .mockResolvedValueOnce({}) // UPDATE wallets
+    .mockResolvedValueOnce({}) // INSERT transaction
+    .mockResolvedValueOnce({}); // COMMIT
+
+  const transaction = await walletService.topup(
+    'wallet-123',
+    50
+  );
+
+  expect(db.getClient).toHaveBeenCalled();
+
+  expect(mockClient.query).toHaveBeenCalledWith('BEGIN');
+
+  expect(mockClient.query).toHaveBeenCalledWith(
+    expect.stringContaining('UPDATE wallets'),
+    [50, 'wallet-123']
+  );
+
+  expect(mockClient.query).toHaveBeenCalledWith(
+    expect.stringContaining('INSERT INTO transactions'),
+    expect.any(Array)
+  );
+
+  expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
+
+  expect(mockClient.release).toHaveBeenCalled();
+
+  expect(transaction.walletId).toBe('wallet-123');
+  expect(transaction.amount).toBe(50);
+  expect(transaction.type).toBe('topup');
+  expect(transaction.status).toBe('completed');
+  expect(transaction.currency).toBe('PGK');
+});
 
 
-it.skip('should reject missing wallet',async()=>{});
+it('should reject missing wallet', async () => {
+  const mockClient = {
+    query: jest.fn(),
+    release: jest.fn()
+  };
+
+  jest.spyOn(db, 'getClient').mockResolvedValue(mockClient as any);
+
+  mockClient.query
+    .mockResolvedValueOnce({}) // BEGIN
+    .mockRejectedValueOnce(new Error('Wallet not found')) // UPDATE fails
+    .mockResolvedValueOnce({}); // ROLLBACK
+
+  await expect(
+    walletService.topup(
+      'missing-wallet',
+      50
+    )
+  ).rejects.toThrow('Wallet not found');
+
+  expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
+  expect(mockClient.release).toHaveBeenCalled();
+});
 
 
 });
@@ -448,13 +512,128 @@ it.skip('should reject missing wallet',async()=>{});
 describe('transfer',()=>{
 
 
-it.skip('should transfer between wallets',async()=>{});
+it('should transfer between wallets', async () => {
+  const mockClient = {
+    query: jest.fn(),
+    release: jest.fn()
+  };
+
+  jest.spyOn(db, 'getClient').mockResolvedValue(mockClient as any);
+
+  mockClient.query
+    .mockResolvedValueOnce({}) // BEGIN
+    .mockResolvedValueOnce({
+      rows: [
+        {
+          id: 'wallet-a',
+          user_id: 'user-a',
+          balance: '500.00'
+        },
+        {
+          id: 'wallet-b',
+          user_id: 'user-b',
+          balance: '100.00'
+        }
+      ]
+    }) // SELECT wallets FOR UPDATE
+    .mockResolvedValueOnce({
+      rows: [
+        {
+          id: 'user-a',
+          full_name: 'Alice'
+        }
+      ]
+    }) // sender
+    .mockResolvedValueOnce({
+      rows: [
+        {
+          id: 'user-b',
+          full_name: 'Bob'
+        }
+      ]
+    }) // receiver
+    .mockResolvedValueOnce({}) // UPDATE wallets
+    .mockResolvedValueOnce({}) // INSERT sender transaction
+    .mockResolvedValueOnce({}) // INSERT receiver transaction
+    .mockResolvedValueOnce({}); // COMMIT
+
+  const transaction = await walletService.transfer(
+    'wallet-a',
+    'wallet-b',
+    100
+  );
+
+  expect(db.getClient).toHaveBeenCalled();
+
+  expect(mockClient.query).toHaveBeenCalledWith('BEGIN');
+  expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
+
+  expect(mockClient.release).toHaveBeenCalled();
+
+  expect(transaction.walletId).toBe('wallet-a');
+  expect(transaction.type).toBe('transfer');
+  expect(transaction.amount).toBe(100);
+  expect(transaction.currency).toBe('PGK');
+  expect(transaction.status).toBe('completed');
+});
 
 
-it.skip('should reject insufficient balance',async()=>{});
+it('should reject insufficient balance', async () => {
+  const mockClient = {
+    query: jest.fn(),
+    release: jest.fn()
+  };
+
+  jest.spyOn(db, 'getClient').mockResolvedValue(mockClient as any);
+
+  mockClient.query
+    .mockResolvedValueOnce({}) // BEGIN
+    .mockResolvedValueOnce({
+      rows: [
+        {
+          id: 'wallet-a',
+          user_id: 'user-a',
+          balance: '50.00'
+        },
+        {
+          id: 'wallet-b',
+          user_id: 'user-b',
+          balance: '100.00'
+        }
+      ]
+    }) // SELECT ... FOR UPDATE
+    .mockResolvedValueOnce({}); // ROLLBACK
+
+  await expect(
+    walletService.transfer(
+      'wallet-a',
+      'wallet-b',
+      100
+    )
+  ).rejects.toThrow('Insufficient balance');
+
+  expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
+  expect(mockClient.release).toHaveBeenCalled();
+});
 
 
-it.skip('should reject invalid amount',async()=>{});
+it('should reject invalid amount', async () => {
+  await expect(
+    walletService.transfer(
+      'wallet-a',
+      'wallet-b',
+      0
+    )
+  ).rejects.toThrow('Invalid transfer amount');
+
+  await expect(
+    walletService.transfer(
+      'wallet-a',
+      'wallet-b',
+      -10
+    )
+  ).rejects.toThrow('Invalid transfer amount');
+});
 
 
 });
@@ -468,10 +647,87 @@ it.skip('should reject invalid amount',async()=>{});
 describe('getTransactionHistory',()=>{
 
 
-it.skip('should return wallet history',async()=>{});
+it('should return wallet history', async () => {
+  const createdAt = new Date();
+
+  querySpy.mockResolvedValueOnce({
+    rows: [
+      {
+        id: 'txn-001',
+        wallet_id: 'wallet-123',
+        type: 'transfer',
+        amount: '100.00',
+        fee: '0.50',
+        currency: 'PGK',
+        status: 'completed',
+        description: 'Transfer to John Doe',
+        reference_id: 'PNG-123456',
+        sender_name: 'Jane Doe',
+        sender_phone: '70000001',
+        receiver_name: 'John Doe',
+        receiver_phone: '70000002',
+        created_at: createdAt
+      }
+    ],
+    command: 'SELECT',
+    rowCount: 1,
+    oid: 0,
+    fields: []
+  });
+
+  const history = await walletService.getTransactionHistory(
+    'wallet-123'
+  );
+
+  expect(querySpy).toHaveBeenCalled();
+
+  expect(querySpy.mock.calls[0][1]).toEqual([
+    'wallet-123'
+  ]);
+
+  expect(history).toHaveLength(1);
+
+  expect(history[0]).toMatchObject({
+    id: 'txn-001',
+    walletId: 'wallet-123',
+    type: 'transfer',
+    amount: 100,
+    fee: 0.5,
+    currency: 'PGK',
+    status: 'completed',
+    description: 'Transfer to John Doe',
+    referenceId: 'PNG-123456',
+    senderName: 'Jane Doe',
+    senderPhone: '70000001',
+    receiverName: 'John Doe',
+    receiverPhone: '70000002'
+  });
+
+  expect(history[0].timestamp).toEqual(createdAt);
+});
 
 
-it.skip('should return empty history',async()=>{});
+it('should return empty history', async () => {
+  querySpy.mockResolvedValueOnce({
+    rows: [],
+    command: 'SELECT',
+    rowCount: 0,
+    oid: 0,
+    fields: []
+  });
+
+  const history = await walletService.getTransactionHistory(
+    'wallet-123'
+  );
+
+  expect(querySpy).toHaveBeenCalled();
+
+  expect(querySpy.mock.calls[0][1]).toEqual([
+    'wallet-123'
+  ]);
+
+  expect(history).toEqual([]);
+});
 
 
 });
