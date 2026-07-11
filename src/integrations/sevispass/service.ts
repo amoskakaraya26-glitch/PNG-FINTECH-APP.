@@ -28,7 +28,14 @@ export class SevisPassService {
   private useMock = process.env.SEVISPASS_USE_MOCK === 'true';
 
   private hasRealConfig(): boolean {
-    const values = [this.clientId, this.clientSecret, this.authUrl, this.apiUrl, this.redirectUri];
+    const values = [
+      this.clientId,
+      this.clientSecret,
+      this.authUrl,
+      this.apiUrl,
+      this.redirectUri,
+    ];
+
     if (values.some((value) => !value || !value.trim())) {
       return false;
     }
@@ -40,20 +47,19 @@ export class SevisPassService {
       'https://api.sevispass.png',
     ];
 
-    return !placeholders.includes(this.clientId) &&
+    return (
+      !placeholders.includes(this.clientId) &&
       !placeholders.includes(this.clientSecret) &&
       !placeholders.includes(this.authUrl) &&
-      !placeholders.includes(this.apiUrl);
+      !placeholders.includes(this.apiUrl)
+    );
   }
 
-  /**
-   * Get SevisPass OAuth login URL
-   * User should be redirected to this URL to login with SevisPass
-   */
   getLoginUrl(state: string): string {
     if (this.useMock) {
-      const mockState = encodeURIComponent(state);
-      return `${this.redirectUri}?code=mock-auth-code&state=${mockState}`;
+      return `${this.redirectUri}?code=mock-auth-code&state=${encodeURIComponent(
+        state
+      )}`;
     }
 
     if (!this.hasRealConfig()) {
@@ -71,15 +77,13 @@ export class SevisPassService {
     return `${this.authUrl}/oauth/authorize?${params.toString()}`;
   }
 
-  /**
-   * Exchange authorization code for access token
-   */
-  async exchangeCodeForToken(code: string): Promise<SevisPassTokenResponse> {
+  async exchangeCodeForToken(
+    code: string
+  ): Promise<SevisPassTokenResponse> {
     if (this.useMock) {
-      // Mock response for development
       return {
-        accessToken: 'mock-access-token-' + Date.now(),
-        refreshToken: 'mock-refresh-token-' + Date.now(),
+        accessToken: `mock-access-token-${Date.now()}`,
+        refreshToken: `mock-refresh-token-${Date.now()}`,
         expiresIn: 3600,
         tokenType: 'Bearer',
       };
@@ -110,14 +114,10 @@ export class SevisPassService {
     }
   }
 
-  /**
-   * Get user information from SevisPass using access token
-   */
   async getUserInfo(accessToken: string): Promise<SevisPassUser> {
     if (this.useMock) {
-      // Mock response for development
       return {
-        id: 'sevispass-user-' + Date.now(),
+        id: `sevispass-user-${Date.now()}`,
         phone: '+675999999999',
         fullName: 'John Doe',
         email: 'john@example.com',
@@ -148,7 +148,9 @@ export class SevisPassService {
         dateOfBirth: response.data.birthdate,
         gender: response.data.gender,
         nationalId: response.data.national_id,
-        verified: response.data.email_verified && response.data.phone_number_verified,
+        verified:
+          response.data.email_verified &&
+          response.data.phone_number_verified,
       };
     } catch (error) {
       console.error('Failed to get user info from SevisPass:', error);
@@ -156,15 +158,13 @@ export class SevisPassService {
     }
   }
 
-  /**
-   * Refresh access token using refresh token
-   */
-  async refreshAccessToken(refreshToken: string): Promise<SevisPassTokenResponse> {
+  async refreshAccessToken(
+    refreshToken: string
+  ): Promise<SevisPassTokenResponse> {
     if (this.useMock) {
-      // Mock response for development
       return {
-        accessToken: 'mock-access-token-' + Date.now(),
-        refreshToken: 'mock-refresh-token-' + Date.now(),
+        accessToken: `mock-access-token-${Date.now()}`,
+        refreshToken: `mock-refresh-token-${Date.now()}`,
         expiresIn: 3600,
         tokenType: 'Bearer',
       };
@@ -194,9 +194,6 @@ export class SevisPassService {
     }
   }
 
-  /**
-   * Revoke access token (logout)
-   */
   async revokeToken(accessToken: string): Promise<void> {
     if (!this.useMock && this.hasRealConfig()) {
       try {
@@ -207,14 +204,10 @@ export class SevisPassService {
         });
       } catch (error) {
         console.error('Failed to revoke token:', error);
-        // Don't throw - revocation failure shouldn't break logout
       }
     }
   }
 
-  /**
-   * Verify SevisPass user identity (can be used for additional verification)
-   */
   async verifyIdentity(accessToken: string): Promise<boolean> {
     try {
       const userInfo = await this.getUserInfo(accessToken);
