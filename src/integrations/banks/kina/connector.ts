@@ -7,31 +7,40 @@ export class KINAConnector extends BankConnector {
     super(apiKey, baseUrl, 'KINA', 'KINA_API_KEY', 'KINA_BASE_URL');
   }
 
-  async linkAccount(accountNumber: string, pin: string): Promise<BankAccount> {
+  async linkAccount(
+    accountNumber: string,
+    pin: string
+  ): Promise<BankAccount> {
     if (this.useMockMode()) {
       return {
         accountNumber,
         accountName: 'Test Account',
         balance: 1000,
-        currency: 'PGK',
+        currency: 'PGK'
       };
     }
 
     this.ensureConfigured();
 
     try {
-      const response = await axios.post(`${this.baseUrl}/account/link`, {
-        accountNumber,
-        pin,
-      }, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.post(
+        `${this.baseUrl}/account/link`,
+        {
+          accountNumber,
+          pin
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`
+          }
+        }
+      );
 
       return {
         accountNumber: response.data.accountNumber,
         accountName: response.data.accountName,
         balance: response.data.balance,
-        currency: 'PGK',
+        currency: 'PGK'
       };
     } catch (error) {
       console.error('KINA account link failed:', error);
@@ -47,9 +56,15 @@ export class KINAConnector extends BankConnector {
     this.ensureConfigured();
 
     try {
-      const response = await axios.get(`${this.baseUrl}/account/${accountNumber}/balance`, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.get(
+        `${this.baseUrl}/account/${accountNumber}/balance`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`
+          }
+        }
+      );
+
       return response.data.balance;
     } catch (error) {
       console.error('KINA balance fetch failed:', error);
@@ -57,7 +72,11 @@ export class KINAConnector extends BankConnector {
     }
   }
 
-  async transfer(fromAccount: string, toAccount: string, amount: number): Promise<BankTransfer> {
+  async transfer(
+    fromAccount: string,
+    toAccount: string,
+    amount: number
+  ): Promise<BankTransfer> {
     if (this.useMockMode()) {
       return {
         id: uuidv4(),
@@ -65,21 +84,27 @@ export class KINAConnector extends BankConnector {
         toAccount,
         amount,
         status: 'completed',
-        timestamp: new Date(),
+        timestamp: new Date()
       };
     }
 
     this.ensureConfigured();
 
     try {
-      const response = await axios.post(`${this.baseUrl}/transfer`, {
-        fromAccount,
-        toAccount,
-        amount,
-        transactionId: uuidv4(),
-      }, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.post(
+        `${this.baseUrl}/transfer`,
+        {
+          fromAccount,
+          toAccount,
+          amount,
+          transactionId: uuidv4()
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`
+          }
+        }
+      );
 
       return {
         id: response.data.transactionId,
@@ -87,7 +112,7 @@ export class KINAConnector extends BankConnector {
         toAccount,
         amount,
         status: response.data.status,
-        timestamp: new Date(),
+        timestamp: new Date()
       };
     } catch (error) {
       console.error('KINA transfer failed:', error);
@@ -95,7 +120,10 @@ export class KINAConnector extends BankConnector {
     }
   }
 
-  async getTransactionHistory(accountNumber: string, limit: number = 10): Promise<any[]> {
+  async getTransactionHistory(
+    accountNumber: string,
+    limit = 10
+  ): Promise<any[]> {
     if (this.useMockMode()) {
       return [];
     }
@@ -103,13 +131,22 @@ export class KINAConnector extends BankConnector {
     this.ensureConfigured();
 
     try {
-      const response = await axios.get(`${this.baseUrl}/account/${accountNumber}/transactions`, {
-        params: { limit },
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.get(
+        `${this.baseUrl}/account/${accountNumber}/transactions`,
+        {
+          params: { limit },
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`
+          }
+        }
+      );
+
       return response.data.transactions;
     } catch (error) {
-      console.error('KINA transaction history fetch failed:', error);
+      console.error(
+        'KINA transaction history fetch failed:',
+        error
+      );
       throw new Error('Failed to fetch KINA transaction history');
     }
   }

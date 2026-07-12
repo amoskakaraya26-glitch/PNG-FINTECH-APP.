@@ -7,7 +7,10 @@ export class BSPConnector extends BankConnector {
     super(apiKey, baseUrl, 'BSP', 'BSP_API_KEY', 'BSP_BASE_URL');
   }
 
-  async linkAccount(accountNumber: string, pin: string): Promise<BankAccount> {
+  async linkAccount(
+    accountNumber: string,
+    pin: string
+  ): Promise<BankAccount> {
     if (this.useMockMode()) {
       return {
         accountNumber,
@@ -20,12 +23,18 @@ export class BSPConnector extends BankConnector {
     this.ensureConfigured();
 
     try {
-      const response = await axios.post(`${this.baseUrl}/accounts/link`, {
-        accountNumber,
-        pin,
-      }, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.post(
+        `${this.baseUrl}/accounts/link`,
+        {
+          accountNumber,
+          pin,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+          },
+        }
+      );
 
       return {
         accountNumber: response.data.accountNumber,
@@ -47,9 +56,15 @@ export class BSPConnector extends BankConnector {
     this.ensureConfigured();
 
     try {
-      const response = await axios.get(`${this.baseUrl}/accounts/${accountNumber}/balance`, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.get(
+        `${this.baseUrl}/accounts/${accountNumber}/balance`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+          },
+        }
+      );
+
       return response.data.balance;
     } catch (error) {
       console.error('BSP balance fetch failed:', error);
@@ -57,7 +72,11 @@ export class BSPConnector extends BankConnector {
     }
   }
 
-  async transfer(fromAccount: string, toAccount: string, amount: number): Promise<BankTransfer> {
+  async transfer(
+    fromAccount: string,
+    toAccount: string,
+    amount: number
+  ): Promise<BankTransfer> {
     if (this.useMockMode()) {
       return {
         id: uuidv4(),
@@ -72,14 +91,20 @@ export class BSPConnector extends BankConnector {
     this.ensureConfigured();
 
     try {
-      const response = await axios.post(`${this.baseUrl}/transfers`, {
-        fromAccount,
-        toAccount,
-        amount,
-        transactionId: uuidv4(),
-      }, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.post(
+        `${this.baseUrl}/transfers`,
+        {
+          fromAccount,
+          toAccount,
+          amount,
+          transactionId: uuidv4(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+          },
+        }
+      );
 
       return {
         id: response.data.transactionId,
@@ -95,7 +120,10 @@ export class BSPConnector extends BankConnector {
     }
   }
 
-  async getTransactionHistory(accountNumber: string, limit: number = 10): Promise<any[]> {
+  async getTransactionHistory(
+    accountNumber: string,
+    limit = 10
+  ): Promise<any[]> {
     if (this.useMockMode()) {
       return [];
     }
@@ -103,10 +131,16 @@ export class BSPConnector extends BankConnector {
     this.ensureConfigured();
 
     try {
-      const response = await axios.get(`${this.baseUrl}/accounts/${accountNumber}/transactions`, {
-        params: { limit },
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.get(
+        `${this.baseUrl}/accounts/${accountNumber}/transactions`,
+        {
+          params: { limit },
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+          },
+        }
+      );
+
       return response.data.transactions;
     } catch (error) {
       console.error('BSP transaction history fetch failed:', error);

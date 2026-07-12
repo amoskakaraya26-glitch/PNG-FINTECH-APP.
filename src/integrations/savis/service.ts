@@ -15,9 +15,9 @@ export class SavisService {
   private hasRealConfig(): boolean {
     return Boolean(
       this.apiKey &&
-      this.baseUrl &&
-      this.apiKey !== 'your_savis_api_key' &&
-      this.baseUrl !== 'https://api.savis.com'
+        this.baseUrl &&
+        this.apiKey !== 'your_savis_api_key' &&
+        this.baseUrl !== 'https://api.savis.com'
     );
   }
 
@@ -45,13 +45,19 @@ export class SavisService {
     this.ensureConfigured();
 
     try {
-      const response = await axios.post(`${this.baseUrl}/kyc/initiate`, {
-        phone,
-        name,
-        sessionId: uuidv4(),
-      }, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` },
-      });
+      const response = await axios.post(
+        `${this.baseUrl}/kyc/initiate`,
+        {
+          phone,
+          name,
+          sessionId: uuidv4(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+          },
+        }
+      );
 
       return {
         sessionId: response.data.sessionId,
@@ -64,9 +70,17 @@ export class SavisService {
     }
   }
 
-  async verifyCallback(sessionId: string, result: any): Promise<KYCVerification> {
+  async verifyCallback(
+    sessionId: string,
+    result: any
+  ): Promise<KYCVerification> {
     if (this.useMockMode()) {
-      if (!sessionId || sessionId === 'invalid-session-id' || !result?.userId || result.status !== 'success') {
+      if (
+        !sessionId ||
+        sessionId === 'invalid-session-id' ||
+        !result?.userId ||
+        result.status !== 'success'
+      ) {
         throw new Error('Invalid callback session or result');
       }
 
@@ -82,13 +96,11 @@ export class SavisService {
       };
     }
 
-    // Validate callback signature
     if (!this.validateCallbackSignature(sessionId, result)) {
       throw new Error('Invalid callback signature');
     }
 
     try {
-      // Process the verification result
       const verification: KYCVerification = {
         id: uuidv4(),
         userId: result.userId,
@@ -106,9 +118,14 @@ export class SavisService {
     }
   }
 
-  private validateCallbackSignature(_sessionId: string, _result: any): boolean {
+  private validateCallbackSignature(
+    _sessionId: string,
+    _result: any
+  ): boolean {
     // Implement signature validation logic
     // For now, return true as placeholder
     return true;
   }
 }
+
+export default new SavisService();

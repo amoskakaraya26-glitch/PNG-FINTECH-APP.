@@ -12,25 +12,34 @@ const router = Router();
  */
 router.post('/face/enroll', authenticate, async (req: AuthRequest, res) => {
   try {
-    const { faceTemplates } = req.body; // Array of face template data (JSON strings)
+    const { faceTemplates } = req.body;
 
     if (!Array.isArray(faceTemplates) || faceTemplates.length === 0) {
-      return res.status(400).json({ error: 'At least one face template required' });
+      return res.status(400).json({
+        error: 'At least one face template required'
+      });
     }
 
     if (faceTemplates.length > 5) {
-      return res.status(400).json({ error: 'Maximum 5 face templates allowed' });
+      return res.status(400).json({
+        error: 'Maximum 5 face templates allowed'
+      });
     }
 
-    const enrolled = await FacialRecognitionService.enrollFace(req.user?.id!, faceTemplates);
+    const enrolled = await FacialRecognitionService.enrollFace(
+      req.user!.id,
+      faceTemplates
+    );
 
-    res.json({
+    return res.json({
       message: 'Face enrollment successful',
       templateCount: enrolled.length,
-      enrolled: true,
+      enrolled: true
     });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message
+    });
   }
 });
 
@@ -44,56 +53,79 @@ router.post('/face/login', async (req, res) => {
     const identifier = (email || phone || '').trim();
 
     if (!identifier || !faceTemplate) {
-      return res.status(400).json({ error: 'Phone/email and face template required' });
+      return res.status(400).json({
+        error: 'Phone/email and face template required'
+      });
     }
 
-    // Find user by email or phone
     const userResult = await pool.query(
-      `SELECT id, email, phone, is_admin, facial_recognition_enabled 
-       FROM users 
-       WHERE email = $1 OR phone = $1`,
+      `
+      SELECT
+        id,
+        email,
+        phone,
+        is_admin,
+        facial_recognition_enabled
+      FROM users
+      WHERE email = $1
+         OR phone = $1
+      `,
       [identifier]
     );
 
     if (userResult.rows.length === 0) {
-      return res.status(401).json({ error: 'User not found' });
+      return res.status(401).json({
+        error: 'User not found'
+      });
     }
 
     const user = userResult.rows[0];
 
     if (!user.facial_recognition_enabled) {
-      return res.status(403).json({ error: 'Facial recognition not enabled for this account' });
+      return res.status(403).json({
+        error: 'Facial recognition not enabled for this account'
+      });
     }
 
-    // Verify face
-    const verification = await FacialRecognitionService.verifyFace(user.id, faceTemplate);
+    const verification =
+      await FacialRecognitionService.verifyFace(
+        user.id,
+        faceTemplate
+      );
 
     if (!verification.success) {
       return res.status(401).json({
         error: verification.message,
-        matchScore: verification.matchScore,
+        matchScore: verification.matchScore
       });
     }
 
-    // Generate JWT token
     const token = jwt.sign(
-      { id: user.id, phone: user.phone, isAdmin: user.is_admin },
+      {
+        id: user.id,
+        phone: user.phone,
+        isAdmin: user.is_admin
+      },
       process.env.JWT_SECRET || 'secret',
-      { expiresIn: '24h' }
+      {
+        expiresIn: '24h'
+      }
     );
 
-    res.json({
+    return res.json({
       message: 'Facial recognition login successful',
       token,
       user: {
         id: user.id,
         email: user.email,
         phone: user.phone,
-        isAdmin: user.is_admin,
-      },
+        isAdmin: user.is_admin
+      }
     });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message
+    });
   }
 });
 
@@ -103,11 +135,16 @@ router.post('/face/login', async (req, res) => {
  */
 router.get('/face/status', authenticate, async (req: AuthRequest, res) => {
   try {
-    const status = await FacialRecognitionService.getFaceEnrollmentStatus(req.user?.id!);
+    const status =
+      await FacialRecognitionService.getFaceEnrollmentStatus(
+        req.user!.id
+      );
 
-    res.json(status);
+    return res.json(status);
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message
+    });
   }
 });
 
@@ -120,17 +157,25 @@ router.post('/face/re-enroll', authenticate, async (req: AuthRequest, res) => {
     const { faceTemplates } = req.body;
 
     if (!Array.isArray(faceTemplates) || faceTemplates.length === 0) {
-      return res.status(400).json({ error: 'At least one face template required' });
+      return res.status(400).json({
+        error: 'At least one face template required'
+      });
     }
 
-    const enrolled = await FacialRecognitionService.reEnrollFace(req.user?.id!, faceTemplates);
+    const enrolled =
+      await FacialRecognitionService.reEnrollFace(
+        req.user!.id,
+        faceTemplates
+      );
 
-    res.json({
+    return res.json({
       message: 'Face re-enrollment successful',
-      templateCount: enrolled.length,
+      templateCount: enrolled.length
     });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message
+    });
   }
 });
 
@@ -140,11 +185,17 @@ router.post('/face/re-enroll', authenticate, async (req: AuthRequest, res) => {
  */
 router.post('/face/disable', authenticate, async (req: AuthRequest, res) => {
   try {
-    await FacialRecognitionService.disableFacialRecognition(req.user?.id!);
+    await FacialRecognitionService.disableFacialRecognition(
+      req.user!.id
+    );
 
-    res.json({ message: 'Facial recognition disabled' });
+    return res.json({
+      message: 'Facial recognition disabled'
+    });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message
+    });
   }
 });
 
@@ -154,11 +205,18 @@ router.post('/face/disable', authenticate, async (req: AuthRequest, res) => {
  */
 router.get('/face/attempts', authenticate, async (req: AuthRequest, res) => {
   try {
-    const attempts = await FacialRecognitionService.getAttemptHistory(req.user?.id!);
+    const attempts =
+      await FacialRecognitionService.getAttemptHistory(
+        req.user!.id
+      );
 
-    res.json({ attempts });
+    return res.json({
+      attempts
+    });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message
+    });
   }
 });
 
