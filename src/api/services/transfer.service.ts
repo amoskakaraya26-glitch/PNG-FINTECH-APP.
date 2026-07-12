@@ -75,7 +75,7 @@ export class TransferService {
   static async getSenderWallet(
     client: QueryClient,
     senderId: string
-  ) {
+  ): Promise<WalletRecord[]> {
     const result = await client.query<WalletRecord>(
       `
         SELECT *
@@ -94,7 +94,7 @@ export class TransferService {
   static async getRecipientByPhone(
     client: QueryClient,
     recipientPhone: string
-  ) {
+  ): Promise<RecipientRecord[]> {
     const result = await client.query<RecipientRecord>(
       `
         SELECT
@@ -118,8 +118,8 @@ export class TransferService {
   static async getUserLimits(
     client: QueryClient,
     userId: string
-  ) {
-   const result = await client.query<UserLimitRecord>(
+  ): Promise<UserLimitRecord[]> {
+    const result = await client.query<UserLimitRecord>(
       `
         SELECT *
         FROM user_limits
@@ -142,7 +142,7 @@ export class TransferService {
     client: QueryClient,
     userId: string,
     amountDelta: number
-  ) {
+  ): Promise<void> {
     await client.query(
       `
         UPDATE wallets
@@ -151,10 +151,7 @@ export class TransferService {
           updated_at = NOW()
         WHERE user_id = $2
       `,
-      [
-        amountDelta,
-        userId
-      ]
+      [amountDelta, userId]
     );
   }
 
@@ -164,7 +161,7 @@ export class TransferService {
   static async createTransferTransaction(
     client: QueryClient,
     transaction: CreateTransferTransactionInput
-  ) {
+  ): Promise<void> {
     await client.query(
       `
         INSERT INTO transactions (
@@ -198,7 +195,7 @@ export class TransferService {
         transaction.amount,
         transaction.description,
         transaction.senderId,
-        transaction.receiverId
+        transaction.receiverId,
       ]
     );
   }
@@ -210,12 +207,92 @@ export class TransferService {
    * will gradually move here.
    */
   static async transferMoney(
-    _client: QueryClient,
-    _request: TransferRequest
+    client: QueryClient,
+    request: TransferRequest
   ): Promise<TransferResult> {
-    throw new Error(
-      'TransferService.transferMoney() has not been implemented.'
+    const {
+      senderId,
+      recipientPhone,
+      amount,
+      description,
+    } = request;
+
+    // Placeholder to preserve the current service API.
+    // The complete orchestration will be implemented
+    // during the next phase of the refactor.
+    const risk = await this.validateFraud(
+      senderId,
+      amount
     );
+    const senderWallets = await this.getSenderWallet(
+        client,
+      senderId
+);
+if (senderWallets.length === 0) {
+  throw new Error('Wallet not found');
+}
+
+const senderWallet = senderWallets[0];
+
+const recipients = await this.getRecipientByPhone(
+  client,
+  recipientPhone
+);
+
+if (recipients.length === 0) {
+  throw new Error('Recipient not found');
+}
+const recipient = recipients[0];
+
+const limits = await this.getUserLimits(
+  client,
+  senderId
+);
+
+if (limits.length > 0) {
+  const limit = limits[0];
+
+  if (amount > Number(limit.per_transaction_limit)) {
+    throw new Error(
+      `Per-transaction limit is PGK ${limit.per_transaction_limit}`
+    );
+  }
+}
+
+if (Number(senderWallet.balance) < amount) {
+  throw new Error('Insufficient balance');
+}
+
+await this.updateWalletBalance(
+  client,
+  senderId,
+  -amount
+);
+await this.updateWalletBalance(
+  client,
+  recipient.id,
+  amount
+);
+const transactionId = crypto.randomUUID();
+
+await this.createTransferTransaction(
+  client,
+  {
+    id: transactionId,
+    walletId: senderWallet.id,
+    amount,
+    description: description || 'P2P Transfer',
+    senderId,
+    receiverId: recipient.id,
+  }
+);
+
+    return {
+  transactionId,
+  amount,
+  recipient: recipient.full_name,
+  risk: risk.riskLevel,
+};
   }
 }
 
