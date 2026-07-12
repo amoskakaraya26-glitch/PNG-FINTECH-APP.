@@ -40,6 +40,24 @@ export interface CreateTransferTransactionInput {
   receiverId: string;
 }
 
+export interface WalletRecord {
+  id: string;
+  user_id: string;
+  balance: string;
+}
+
+export interface RecipientRecord {
+  id: string;
+  full_name: string;
+  wallet_id: string;
+}
+
+export interface UserLimitRecord {
+  id: string;
+  user_id: string;
+  per_transaction_limit: string;
+}
+
 export class TransferService {
   /**
    * Performs fraud validation before a transfer.
@@ -58,7 +76,7 @@ export class TransferService {
     client: QueryClient,
     senderId: string
   ) {
-    const result = await client.query(
+    const result = await client.query<WalletRecord>(
       `
         SELECT *
         FROM wallets
@@ -77,7 +95,7 @@ export class TransferService {
     client: QueryClient,
     recipientPhone: string
   ) {
-    const result = await client.query(
+    const result = await client.query<RecipientRecord>(
       `
         SELECT
           u.id,
@@ -101,7 +119,7 @@ export class TransferService {
     client: QueryClient,
     userId: string
   ) {
-    const result = await client.query(
+   const result = await client.query<UserLimitRecord>(
       `
         SELECT *
         FROM user_limits
