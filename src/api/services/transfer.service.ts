@@ -31,6 +31,15 @@ export interface TransferResult {
   risk: string;
 }
 
+export interface CreateTransferTransactionInput {
+  id: string;
+  walletId: string;
+  amount: number;
+  description: string;
+  senderId: string;
+  receiverId: string;
+}
+
 export class TransferService {
   /**
    * Performs fraud validation before a transfer.
@@ -44,9 +53,6 @@ export class TransferService {
 
   /**
    * Retrieves the sender's wallet.
-   *
-   * The controller is responsible for deciding what
-   * to do if no wallet is found.
    */
   static async getSenderWallet(
     client: QueryClient,
@@ -65,10 +71,7 @@ export class TransferService {
   }
 
   /**
-   * Retrieves the recipient and their wallet using a phone number.
-   *
-   * The controller is responsible for handling the
-   * "recipient not found" case.
+   * Retrieves the recipient and wallet by phone number.
    */
   static async getRecipientByPhone(
     client: QueryClient,
@@ -91,28 +94,102 @@ export class TransferService {
     return result.rows;
   }
 
+  /**
+   * Retrieves transfer limits for a user.
+   */
   static async getUserLimits(
-  client: QueryClient,
-  userId: string
-) {
-  const result = await client.query(
-    `
-      SELECT *
-      FROM user_limits
-      WHERE user_id = $1
-    `,
-    [userId]
-  );
+    client: QueryClient,
+    userId: string
+  ) {
+    const result = await client.query(
+      `
+        SELECT *
+        FROM user_limits
+        WHERE user_id = $1
+      `,
+      [userId]
+    );
 
-  return result.rows;
-}
+    return result.rows;
+  }
 
+  /**
+   * Updates a wallet balance.
+   *
+   * Pass:
+   *  - negative amount => debit
+   *  - positive amount => credit
+   */
+  static async updateWalletBalance(
+    client: QueryClient,
+    userId: string,
+    amountDelta: number
+  ) {
+    await client.query(
+      `
+        UPDATE wallets
+        SET
+          balance = balance + $1,
+          updated_at = NOW()
+        WHERE user_id = $2
+      `,
+      [
+        amountDelta,
+        userId
+      ]
+    );
+  }
+
+  /**
+   * Records a completed transfer transaction.
+   */
+  static async createTransferTransaction(
+    client: QueryClient,
+    transaction: CreateTransferTransactionInput
+  ) {
+    await client.query(
+      `
+        INSERT INTO transactions (
+          id,
+          wallet_id,
+          type,
+          amount,
+          currency,
+          status,
+          description,
+          sender_id,
+          receiver_id,
+          category
+        )
+        VALUES (
+          $1,
+          $2,
+          'transfer',
+          $3,
+          'PGK',
+          'completed',
+          $4,
+          $5,
+          $6,
+          'transfer'
+        )
+      `,
+      [
+        transaction.id,
+        transaction.walletId,
+        transaction.amount,
+        transaction.description,
+        transaction.senderId,
+        transaction.receiverId
+      ]
+    );
+  }
 
   /**
    * Placeholder.
    *
-   * During Release 1.4 we'll gradually move the complete
-   * transfer workflow into this method.
+   * During Release 1.4 the complete transfer workflow
+   * will gradually move here.
    */
   static async transferMoney(
     _client: QueryClient,

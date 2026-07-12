@@ -124,72 +124,37 @@ const recipient = recipients[0];
     /**
      * Debit Sender
      */
-    await client.query(
-      `
-        UPDATE wallets
-        SET
-          balance = balance - $1,
-          updated_at = NOW()
-        WHERE user_id = $2
-      `,
-      [parsedAmount, req.user!.id]
-    );
+    await TransferService.updateWalletBalance(
+  client,
+  req.user!.id,
+  -parsedAmount
+);
 
     /**
      * Credit Recipient
      */
-    await client.query(
-      `
-        UPDATE wallets
-        SET
-          balance = balance + $1,
-          updated_at = NOW()
-        WHERE user_id = $2
-      `,
-      [parsedAmount, recipient.id]
-    );
+    await TransferService.updateWalletBalance(
+  client,
+  recipient.id,
+  parsedAmount
+);
 
     /**
      * Record Transaction
      */
     const transactionId = uuidv4();
 
-    await client.query(
-      `
-        INSERT INTO transactions (
-          id,
-          wallet_id,
-          type,
-          amount,
-          currency,
-          status,
-          description,
-          sender_id,
-          receiver_id,
-          category
-        )
-        VALUES (
-          $1,
-          $2,
-          'transfer',
-          $3,
-          'PGK',
-          'completed',
-          $4,
-          $5,
-          $6,
-          'transfer'
-        )
-      `,
-      [
-        transactionId,
-        senderWallet.id,
-        parsedAmount,
-        description || 'P2P Transfer',
-        req.user!.id,
-        recipient.id,
-      ]
-    );
+    await TransferService.createTransferTransaction(
+  client,
+  {
+    id: transactionId,
+    walletId: senderWallet.id,
+    amount: parsedAmount,
+    description: description || 'P2P Transfer',
+    senderId: req.user!.id,
+    receiverId: recipient.id,
+  }
+);
 
     await client.query('COMMIT');
 
