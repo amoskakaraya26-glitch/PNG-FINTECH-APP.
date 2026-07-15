@@ -30,133 +30,17 @@ export const sendMoney = async (
       return;
     }
 
-    /**
-     * Fraud Detection
-     */
-    const risk = await TransferService.validateFraud(
-  req.user!.id,
-  parsedAmount
-);
-
-    if (risk.riskLevel === 'high') {
-      await client.query('ROLLBACK');
-
-      res.status(403).json({
-        error: 'Transfer held for security review',
-        risk,
-      });
-
-      return;
-    }
-
-    /**
-     * Sender Wallet
-     */
-    const senderWallets = await TransferService.getSenderWallet(
-  client,
-  req.user!.id
-);
-
-if (senderWallets.length === 0) {
-  await client.query('ROLLBACK');
-
-  res.status(404).json({
-    error: 'Wallet not found',
-  });
-
-  return;
-}
-
-const senderWallet = senderWallets[0];
-
-
-    if (Number(senderWallet.balance) < parsedAmount) {
-      await client.query('ROLLBACK');
-
-      res.status(400).json({
-        error: 'Insufficient balance',
-      });
-
-      return;
-    }
-
-    /**
-     * User Limits
-     */
-    const limits = await TransferService.getUserLimits(
-  client,
-  req.user!.id
-);
-
-if (limits.length > 0) {
-  const limit = limits[0];
-
-  if (parsedAmount > Number(limit.per_transaction_limit)) {
-    await client.query('ROLLBACK');
-
-    res.status(400).json({
-      error: `Per-transaction limit is PGK ${limit.per_transaction_limit}`,
-    });
-
-    return;
-  }
-}
-    /**
-     * Recipient
-     */
-    const recipients = await TransferService.getRecipientByPhone(
-  client,
-  recipientPhone
-);
-
-if (recipients.length === 0) {
-  await client.query('ROLLBACK');
-
-  res.status(404).json({
-    error: 'Recipient not found',
-  });
-
-  return;
-}
-
-const recipient = recipients[0];
-
-    /**
-     * Debit Sender
-     */
-    await TransferService.updateWalletBalance(
-  client,
-  req.user!.id,
-  -parsedAmount
-);
-
-    /**
-     * Credit Recipient
-     */
-    await TransferService.updateWalletBalance(
-  client,
-  recipient.id,
-  parsedAmount
-);
-
-    /**
-     * Record Transaction
-     */
-    const transactionId = uuidv4();
-
-    await TransferService.createTransferTransaction(
+   const result = await TransferService.transferMoney(
   client,
   {
-    id: transactionId,
-    walletId: senderWallet.id,
-    amount: parsedAmount,
-    description: description || 'P2P Transfer',
     senderId: req.user!.id,
-    receiverId: recipient.id,
+    recipientPhone,
+    amount: parsedAmount,
+    description,
   }
 );
 
-    await client.query('COMMIT');
+await client.query('COMMIT');
 
     /**
      * Live Balance Updates
@@ -167,9 +51,9 @@ const recipient = recipients[0];
     );
 
     const receiverBalance = await pool.query(
-      'SELECT balance FROM wallets WHERE user_id = $1',
-      [recipient.id]
-    );
+  'SELECT balance FROM wallets WHERE user_id = $1',
+  [result.receiverId]
+);
 
     emitBalanceUpdate(
       req.user!.id,
@@ -177,18 +61,19 @@ const recipient = recipients[0];
     );
 
     emitBalanceUpdate(
-      recipient.id,
-      Number(receiverBalance.rows[0].balance)
-    );
+    result.receiverId,
+    Number(receiverBalance.rows[0].balance)
+);
 
 
     res.json({
-      message: 'Transfer successful',
-      transactionId,
-      amount: parsedAmount,
-      recipient: recipient.full_name,
-      risk: risk.riskLevel,
-    });
+  message: 'Transfer successful',
+  transactionId: result.transactionId,
+  amount: result.amount,
+  recipient: result.recipient,
+  risk: result.risk,
+});
+
   } catch (err: any) {
     await client.query('ROLLBACK');
 

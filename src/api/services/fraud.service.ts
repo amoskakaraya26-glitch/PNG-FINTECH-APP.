@@ -54,14 +54,6 @@ reasons.push(
 }
 
 
-
-
-
-
-
-
-
-
 // FREQUENCY CHECK
 
 
@@ -73,10 +65,9 @@ SELECT COUNT(*)
 
 FROM transactions
 
-WHERE user_id=$1
+WHERE sender_id = $1
 
 AND created_at > NOW() - INTERVAL '10 minutes'
-
 `,
 
 [userId]

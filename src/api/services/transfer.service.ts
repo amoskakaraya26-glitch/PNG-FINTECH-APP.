@@ -1,5 +1,5 @@
 import { calculateRisk } from './fraud.service';
-
+import LedgerService from './ledger.service';
 /**
  * Minimal database client interface.
  *
@@ -28,6 +28,7 @@ export interface TransferResult {
   transactionId: string;
   amount: number;
   recipient: string;
+  receiverId: string;
   risk: string;
 }
 
@@ -87,6 +88,22 @@ export class TransferService {
 
     return result.rows;
   }
+static async getWalletByUserId(
+  client: QueryClient,
+  userId: string
+): Promise<WalletRecord | null> {
+  const result = await client.query<WalletRecord>(
+    `
+      SELECT *
+      FROM wallets
+      WHERE user_id = $1
+    `,
+    [userId]
+  );
+
+  return result.rows[0] ?? null;
+}
+
 
   /**
    * Retrieves the recipient and wallet by phone number.
@@ -111,6 +128,25 @@ export class TransferService {
 
     return result.rows;
   }
+
+/**
+ * Retrieves a wallet by wallet ID.
+ */
+static async getWalletById(
+  client: QueryClient,
+  walletId: string
+): Promise<WalletRecord | null> {
+  const result = await client.query<WalletRecord>(
+    `
+      SELECT *
+      FROM wallets
+      WHERE id = $1
+    `,
+    [walletId]
+  );
+
+  return result.rows[0] ?? null;
+}
 
   /**
    * Retrieves transfer limits for a user.
@@ -173,8 +209,7 @@ export class TransferService {
           status,
           description,
           sender_id,
-          receiver_id,
-          category
+          receiver_id
         )
         VALUES (
           $1,
@@ -185,8 +220,7 @@ export class TransferService {
           'completed',
           $4,
           $5,
-          $6,
-          'transfer'
+          $6
         )
       `,
       [
@@ -224,15 +258,14 @@ export class TransferService {
       senderId,
       amount
     );
-    const senderWallets = await this.getSenderWallet(
-        client,
-      senderId
+   const senderWallet = await this.getWalletByUserId(
+  client,
+  senderId
 );
-if (senderWallets.length === 0) {
+
+if (!senderWallet) {
   throw new Error('Wallet not found');
 }
-
-const senderWallet = senderWallets[0];
 
 const recipients = await this.getRecipientByPhone(
   client,
@@ -243,6 +276,14 @@ if (recipients.length === 0) {
   throw new Error('Recipient not found');
 }
 const recipient = recipients[0];
+const recipientWallet = await this.getWalletById(
+  client,
+  recipient.wallet_id
+);
+
+if (!recipientWallet) {
+  throw new Error('Recipient wallet not found');
+}
 
 const limits = await this.getUserLimits(
   client,
@@ -262,6 +303,13 @@ if (limits.length > 0) {
 if (Number(senderWallet.balance) < amount) {
   throw new Error('Insufficient balance');
 }
+const senderBalanceBefore = Number(senderWallet.balance);
+const senderBalanceAfter = senderBalanceBefore - amount;
+
+const recipientBalanceBefore = Number(recipientWallet.balance);
+const recipientBalanceAfter = recipientBalanceBefore + amount;
+
+const transactionId = crypto.randomUUID();
 
 await this.updateWalletBalance(
   client,
@@ -273,7 +321,7 @@ await this.updateWalletBalance(
   recipient.id,
   amount
 );
-const transactionId = crypto.randomUUID();
+
 
 await this.createTransferTransaction(
   client,
@@ -286,11 +334,27 @@ await this.createTransferTransaction(
     receiverId: recipient.id,
   }
 );
+await LedgerService.recordTransfer(client, {
+  transactionId,
 
-    return {
+  senderWalletId: senderWallet.id,
+  receiverWalletId: recipientWallet.id,
+
+  amount,
+
+  senderBalanceBefore,
+  senderBalanceAfter,
+
+  receiverBalanceBefore: recipientBalanceBefore,
+  receiverBalanceAfter: recipientBalanceAfter,
+
+  description: `Transfer to ${recipient.full_name}`,
+});
+   return {
   transactionId,
   amount,
   recipient: recipient.full_name,
+  receiverId: recipient.id,
   risk: risk.riskLevel,
 };
   }

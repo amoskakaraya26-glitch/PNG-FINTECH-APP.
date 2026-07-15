@@ -1,105 +1,44 @@
 import { Router } from 'express';
-
 import { authenticate } from '../middleware/auth.middleware';
-
 import pool from '../../database/connection';
-
 import bcrypt from 'bcryptjs';
 
-
-
 import { createNotification } from '../services/notification.service';
-
 import { createAuditLog } from '../services/audit.service';
-
 import { emitBalanceUpdate } from '../socket';
-
 import { calculateRisk } from '../services/fraud.service';
-
-
-
-
 
 const router = Router();
 
-
-
-
-
-
-
-
-
-
 // LINK BANK ACCOUNT
 
-router.post('/link',authenticate,async(req:any,res)=>{
+router.post('/link', authenticate, async (req: any, res) => {
+  try {
+    const {
+      bankName,
+      accountNumber
+    } = req.body;
 
+    res.json({
+      success: true,
+      message: 'Bank account linked',
+      bank: {
+        bankName,
+        accountNumber,
+        verified: true
+      }
+    });
 
-try{
+  } catch (error) {
 
+    console.error(error);
 
-const {
+    res.status(500).json({
+      error: 'Bank link failed'
+    });
 
-bankName,
-
-accountNumber
-
-}=req.body;
-
-
-
-
-
-res.json({
-
-success:true,
-
-message:'Bank account linked',
-
-bank:{
-
-bankName,
-
-accountNumber,
-
-verified:true
-
-}
-
+  }
 });
-
-
-
-
-}catch(error){
-
-
-
-console.error(error);
-
-
-
-res.status(500).json({
-
-error:'Bank link failed'
-
-});
-
-
-
-}
-
-
-});
-
-
-
-
-
-
-
-
 
 // GET BANK ACCOUNTS
 
@@ -575,19 +514,17 @@ if(risk.riskLevel==='high'){
 
 
 await createAuditLog({
+  userId: req.user.id,
 
-userId:req.user.id,
+  action: "FRAUD_BLOCK",
 
-action:'FRAUD_BLOCK',
+  category: "SECURITY",
 
-category:'SECURITY',
+  description: `High risk cash out blocked PGK ${amount}`,
 
-description:`High risk cash out blocked PGK ${amount}`,
+  metadata: risk,
 
-metadata:risk,
-
-ipAddress:req.ip
-
+  ipAddress: req.ip,
 });
 
 
