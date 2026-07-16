@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pool from '../../database/connection';
 import { AuthRequest } from '../middleware/auth.middleware';
-
+import { createNotification } from '../services/notification.service';
 import TransferService from '../services/transfer.service';
 import { emitBalanceUpdate } from '../socket';
 
@@ -41,6 +41,36 @@ export const sendMoney = async (
 );
 
 await client.query('COMMIT');
+await createNotification({
+  userId: req.user!.id,
+
+  type: 'transfer_sent',
+
+  title: '💸 Transfer Successful',
+
+  message: `You sent PGK ${result.amount.toFixed(2)} to ${result.recipient}`,
+
+  data: {
+    transactionId: result.transactionId,
+    amount: result.amount,
+    recipient: result.recipient,
+  },
+});
+await createNotification({
+  userId: result.receiverId,
+
+  type: 'transfer_received',
+
+  title: 'Money Received',
+
+  message: `You received PGK ${result.amount.toFixed(2)} from another PNG Wallet user`,
+
+  data: {
+    transactionId: result.transactionId,
+    amount: result.amount,
+    senderId: req.user!.id,
+  },
+});
 
     /**
      * Live Balance Updates

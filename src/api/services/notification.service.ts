@@ -21,7 +21,7 @@ interface NotificationInput {
   message:string;
 
 
-  data?:any;
+  data?: Record<string, unknown>;
 
 
 }
