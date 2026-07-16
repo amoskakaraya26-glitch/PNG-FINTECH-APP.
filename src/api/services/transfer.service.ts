@@ -276,6 +276,9 @@ if (recipients.length === 0) {
   throw new Error('Recipient not found');
 }
 const recipient = recipients[0];
+if (recipient.id === senderId) {
+  throw new Error("You cannot send money to yourself.");
+}
 const recipientWallet = await this.getWalletById(
   client,
   recipient.wallet_id

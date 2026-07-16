@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 import { transferAPI, contactsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { generateReceipt } from '../utils/generateReceipt';
@@ -12,6 +12,7 @@ import './SendMoney.css';
 const SendMoney: React.FC = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { user } = useAuth();
 
@@ -38,7 +39,19 @@ const SendMoney: React.FC = () => {
       .catch(() => {});
 
   }, []);
+useEffect(() => {
+  const state = location.state as
+    | {
+        recipientPhone?: string;
+        recipientName?: string;
+      }
+    | undefined;
 
+  if (state?.recipientPhone) {
+    setPhone(state.recipientPhone);
+    setStep('amount');
+  }
+}, [location.state]);
 
 
   const handleSend = async () => {

@@ -10,10 +10,28 @@ const ScanQR: React.FC = () => {
   const [manualCode, setManualCode] = useState('');
 
   const handleManualPay = () => {
-    if (!manualCode.trim()) return toast.error('Enter QR code or payment details');
-    toast.success('Processing payment...');
-    navigate('/merchant');
-  };
+  if (!manualCode.trim()) {
+    return toast.error('Enter QR code or payment details');
+  }
+
+  try {
+    const qr = JSON.parse(manualCode);
+
+if (qr.type !== "png_wallet_receive") {
+  return toast.error("Unsupported QR code");
+}
+
+toast.success(`QR detected for ${qr.name}`);
+navigate("/send", {
+  state: {
+    recipientPhone: qr.phone,
+    recipientName: qr.name,
+  },
+});
+  } catch {
+    toast.error('Invalid QR code');
+  }
+};
 
   return (
     <div className="scan-qr">
